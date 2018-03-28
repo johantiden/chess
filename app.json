@@ -1,0 +1,5 @@
+{
+  "name": "TV-Time",
+  "description": "Download and manage series.",
+  "image": "heroku/java"
+}

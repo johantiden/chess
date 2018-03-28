@@ -1,0 +1,7 @@
+<root>
+  <item name='com.google.common.collect.ImmutableSortedSet java.util.Comparator&lt;? super E&gt; comparator()'>
+    <annotation name='org.jetbrains.annotations.Contract'>
+      <val val="&quot;-&gt; !null&quot;"/>
+    </annotation>
+  </item>
+</root>

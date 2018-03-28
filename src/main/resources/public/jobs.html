@@ -1,0 +1,32 @@
+<html lang="en" xmlns:javascript="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="stylesheets/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="./static/bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="./static/bower_components/angular-resource/angular-resource.js"></script>
+    <script type="text/javascript" src="./static/bower_components/angular-cookies/angular-cookies.js"></script>
+    <script type="text/javascript" src="./static/bower_components/angular-animate/angular-animate.js"></script>
+    <script type="text/javascript" src="./app/app.js"></script>
+    <script type="text/javascript" src="./app/controllers.js"></script>
+    <script type="text/javascript" src="./app/services.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="./static/node_modules/material-components-web/dist/material-components-web.css">
+    <script src="./static/node_modules/material-components-web/dist/material-components-web.js"></script>
+    <title>tv-time</title>
+</head>
+<body>
+
+<div ng-app="myApp" ng-controller="jobsCtrl">
+    <nav id="basic-tab-bar" class="mdc-tab-bar">
+        <a class="mdc-tab" href="/" >TV</a>
+        <a class="mdc-tab mdc-tab--active">JOBS</a>
+        <span class="mdc-tab-bar__indicator"></span>
+    </nav>
+
+    <div class="mdc-card__primary" ng-repeat="job in jobs">
+        {{job.title}}
+    </div>
+    <div ng-if="jobs.length == 0">No jobs!</div>
+</div>
+</body>
+</html>
