@@ -53,7 +53,7 @@ public class IndexController {
 
 
         Graphics g = buffer.getGraphics();
-        Board board = chessEngine.getBoard();
+        Board board = chessEngine.getBoard().copy();
         boardPainter.paint(g, board);
         paintScoreBar(g, board);
         return toByteArray(buffer);

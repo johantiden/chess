@@ -20,7 +20,7 @@ public class Move {
     private void verify(Board board, boolean careAboutCheck) {
 
         if (from.getPosition().equals(to)) {
-            throw new RuntimeException("Can't move from to the same location!");
+            throw new RuntimeException("Can't move to the same location!");
         }
 
         if (capture.isPresent()) {

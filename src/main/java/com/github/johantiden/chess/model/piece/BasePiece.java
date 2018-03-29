@@ -66,7 +66,8 @@ public abstract class BasePiece implements Piece {
     private boolean leadsToCheckBeingChecked(PotentialMove m, Board board) {
         Board copy = board.copy();
         copy.applyUnconditionally(m);
-        return copy.isBeingChecked(color);
+        boolean beingChecked = copy.isBeingChecked(color);
+        return beingChecked;
     }
 
     protected abstract List<PotentialMove> getPossibleMoves(Board board);
@@ -115,4 +116,17 @@ public abstract class BasePiece implements Piece {
     @Override
     public int getY() {return getPosition().getY();}
 
+
+    @Override
+    public boolean equals(Object o) {
+
+        throw new RuntimeException("oops");
+
+    }
+
+    @Override
+    public int hashCode() {
+        throw new RuntimeException("oops");
+
+    }
 }

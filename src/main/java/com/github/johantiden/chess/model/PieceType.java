@@ -6,7 +6,7 @@ public enum PieceType {
     BISHOP("Bishop", "B", 3),
     ROOK("Rook", "R", 5),
     QUEEN("Queen", "Q", 9),
-    KING("King", "K", 100);
+    KING("King", "K", 0);
 
     private final String prettyName;
     private final String algebraic;

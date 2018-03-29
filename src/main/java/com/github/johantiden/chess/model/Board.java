@@ -26,7 +26,7 @@ public class Board {
     private final Map<Position, Piece> pieces;
     private final List<Move> history = new ArrayList<>();
 
-    Board(Map<Position, Piece> pieces) {
+    public Board(Map<Position, Piece> pieces) {
         this.pieces = pieces;
     }
 
@@ -171,7 +171,7 @@ public class Board {
                 .collect(Collectors.toList());
 
         boolean checked = allOpponentMoves.stream()
-                .anyMatch(m -> m.to.equals(getKing(myColor).getPosition()));
+                .anyMatch(m -> m.to.getPosition().equals(getKing(myColor).getPosition()));
 
         return checked;
     }
