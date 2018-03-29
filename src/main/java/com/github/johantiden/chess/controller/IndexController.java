@@ -1,8 +1,11 @@
 package com.github.johantiden.chess.controller;
 
 
+import com.github.johantiden.chess.engine.BoardEvaluator;
 import com.github.johantiden.chess.engine.ChessEngine;
 import com.github.johantiden.chess.model.Board;
+import com.github.johantiden.chess.model.ChessColor;
+import com.github.johantiden.chess.util.Maths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ import java.io.IOException;
 public class IndexController {
 
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+    public static final int BOARD_WIDTH = 1000;
+    public static final int BAR_HEIGHT = 100;
     @Autowired
     private BoardPainter boardPainter;
     @Autowired
@@ -42,12 +47,33 @@ public class IndexController {
     }
 
     private byte[] drawBoard() {
-        BufferedImage buffer = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
+        BufferedImage buffer = new BufferedImage(BOARD_WIDTH, BOARD_WIDTH+BAR_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 
         Graphics g = buffer.getGraphics();
-        boardPainter.paint(g, chessEngine.getBoard());
+        Board board = chessEngine.getBoard();
+        boardPainter.paint(g, board);
+        paintScoreBar(g, board);
         return toByteArray(buffer);
+    }
+
+    private void paintScoreBar(Graphics g, Board board) {
+        BoardEvaluator boardEvaluator = new BoardEvaluator(board);
+
+        double white = boardEvaluator.evaluate(ChessColor.WHITE);
+        double black = boardEvaluator.evaluate(ChessColor.BLACK);
+
+
+        double ratio =  white / (white+black);
+
+        g.setColor(Color.WHITE);
+        g.fillRect(0, BOARD_WIDTH, Maths.floorI(BOARD_WIDTH*ratio), BAR_HEIGHT);
+
+        g.setColor(Color.BLACK);
+        g.fillRect(Maths.ceilI(BOARD_WIDTH*ratio), BOARD_WIDTH, Maths.floorI(BOARD_WIDTH*(1-ratio)), BAR_HEIGHT);
+
+
+
     }
 
     private byte[] toByteArray(BufferedImage image) {
