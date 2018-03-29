@@ -17,25 +17,31 @@ public class BoardEvaluator {
 
     public static final double MAX_DISTANCE_TO_CENTER = getDistanceToCenter(0, 0);
 
-    public double evaluate(Board board, List<PotentialMove> legalMovesWhite, List<PotentialMove> legalMovesBlack) {
+    public double evaluate(Board board) {
 
-        double whiteScore = evaluate(board, ChessColor.WHITE, legalMovesWhite);
-        double blackScore = evaluate(board, ChessColor.BLACK, legalMovesBlack);
+
+        double whiteScore = evaluate(board, ChessColor.WHITE);
+        double blackScore = evaluate(board, ChessColor.BLACK);
         return whiteScore / (blackScore + whiteScore);
 
     }
 
-
-    private double evaluate(Board board, ChessColor color, List<PotentialMove> legalMoves) {
-        double material = material(color, board);
-        double boardCoverage = boardCoverage(color, board, legalMoves);
-
-
-        return material + boardCoverage;
+    private List<PotentialMove> getLegalMoves(Board board, ChessColor white) {
+        return new Player(board, white, new AI(this)).getLegalMoves(true);
     }
 
-    private double boardCoverage(ChessColor color, Board board, List<PotentialMove> legalMoves) {
 
+    private double evaluate(Board board, ChessColor color) {
+        double material = material(color, board);
+//        double boardCoverage = boardCoverage(color, board);
+
+//        return material + boardCoverage;
+        return material;
+    }
+
+    private double boardCoverage(ChessColor color, Board board) {
+
+        List<PotentialMove> legalMoves = getLegalMoves(board, color);
 
         List<Position> possiblePositions = legalMoves.stream()
                 .map(m -> m.to.getPosition())
@@ -59,7 +65,7 @@ public class BoardEvaluator {
     private double positionValue(Position position, int count) {
         double distanceToCenter = getDistanceToCenter(position);
 
-        return (MAX_DISTANCE_TO_CENTER - distanceToCenter) / 1000.0;
+        return (MAX_DISTANCE_TO_CENTER - distanceToCenter)*Math.sqrt(count) / 10000.0;
     }
 
     private static double getDistanceToCenter(Position position) {

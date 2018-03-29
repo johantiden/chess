@@ -64,7 +64,7 @@ public class IndexController {
 
         Player white = new Player(board, ChessColor.WHITE, new AI(boardEvaluator));
         Player black = new Player(board, ChessColor.BLACK, new AI(boardEvaluator));
-        double evaluation = boardEvaluator.evaluate(board, white.getLegalMoves(), black.getLegalMoves());
+        double evaluation = boardEvaluator.evaluate(board);
 
 
         g.setColor(Color.WHITE);

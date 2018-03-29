@@ -30,7 +30,7 @@ public class Move {
             }
 
             if (target.type() == PieceType.KING) {
-                throw new RuntimeException("Can't capture the king!");
+//                throw new RuntimeException("Can't capture the king!");
             }
         }
 

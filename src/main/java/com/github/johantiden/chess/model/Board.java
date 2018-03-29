@@ -6,6 +6,7 @@ import com.github.johantiden.chess.model.piece.Knight;
 import com.github.johantiden.chess.model.piece.Pawn;
 import com.github.johantiden.chess.model.piece.Queen;
 import com.github.johantiden.chess.model.piece.Rook;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.ArrayList;
@@ -24,10 +25,11 @@ import static com.github.johantiden.chess.model.Position.pos;
 
 public class Board {
     private final Map<Position, Piece> pieces;
-    private final List<Move> history = new ArrayList<>();
+    private final List<Move> history;
 
-    public Board(Map<Position, Piece> pieces) {
+    public Board(Map<Position, Piece> pieces, List<Move> history) {
         this.pieces = pieces;
+        this.history = history;
     }
 
     public static Board newBoard() {
@@ -47,7 +49,7 @@ public class Board {
         add(pieces, new King(pos(4, 0), WHITE));
         add(pieces, new King(pos(4, 7), BLACK));
 
-        return new Board(pieces);
+        return new Board(pieces, Lists.newArrayList());
     }
 
     private static Board newRealBoard() {
@@ -82,7 +84,7 @@ public class Board {
         add(pieces, new King(pos(4, 7), BLACK));
 
 
-        return new Board(pieces);
+        return new Board(pieces, Lists.newArrayList());
     }
 
     private static void add(Map<Position, Piece> pieces, Piece p) {
@@ -177,7 +179,7 @@ public class Board {
     }
 
     public Board copy() {
-        return new Board(Maps.newHashMap(pieces));
+        return new Board(Maps.newHashMap(pieces), Lists.newArrayList(history));
     }
 
     @Override

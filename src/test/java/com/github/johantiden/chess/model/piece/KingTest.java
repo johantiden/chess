@@ -5,6 +5,7 @@ import com.github.johantiden.chess.model.ChessColor;
 import com.github.johantiden.chess.model.Piece;
 import com.github.johantiden.chess.model.Position;
 import com.github.johantiden.chess.model.PotentialMove;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class KingTest extends TestCase {
         pieces.put(whiteKing.getPosition(), whiteKing);
         pieces.put(blackRook.getPosition(), blackRook);
 
-        Board board = new Board(pieces);
+        Board board = new Board(pieces, Lists.newArrayList());
         List<PotentialMove> legalMoves = whiteKing.getLegalMoves(board, true);
 
         assertThat(legalMoves.size(), is(1));

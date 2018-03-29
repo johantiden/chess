@@ -23,7 +23,7 @@ public class Player {
     }
 
     public Move getMove() {
-        List<PotentialMove> legalPotentialMoves = getLegalMoves();
+        List<PotentialMove> legalPotentialMoves = getLegalMoves(true);
 
         if (legalPotentialMoves.isEmpty()) {
             return null;
@@ -33,11 +33,11 @@ public class Player {
         return board.toMove(ai.chooseMove(legalPotentialMoves, board), true);
     }
 
-    public List<PotentialMove> getLegalMoves() {
+    public List<PotentialMove> getLegalMoves(boolean careAboutCheck) {
         Collection<Piece> myPieces = board.getPieces(color);
 
         return myPieces.stream()
-                .flatMap(p -> p.getLegalMoves(board, true).stream())
+                .flatMap(p -> p.getLegalMoves(board, careAboutCheck).stream())
                 .collect(Collectors.toList());
     }
 

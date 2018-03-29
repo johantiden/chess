@@ -22,11 +22,10 @@ public class AI {
 
     public PotentialMove chooseMove(List<PotentialMove> possibleMoves, Board board) {
         ChessColor myColor = possibleMoves.get(0).from.getColor();
-        List<PotentialMove> opponentLegalMoves = new Player(board, ChessColor.not(myColor), this).getLegalMoves();
 
 
         List<Pair<PotentialMove, Double>> withScore = possibleMoves.stream()
-                .map(m -> calculate(m, myColor, board, possibleMoves, opponentLegalMoves))
+                .map(m -> calculate(m, myColor, board))
                 .collect(Collectors.toList());
 
 
@@ -46,16 +45,16 @@ public class AI {
 
     }
 
-    private Pair<PotentialMove, Double> calculate(PotentialMove m, ChessColor myColor, Board board, List<PotentialMove> possibleMovesWhite, List<PotentialMove> possibleMovesBlack) {
+    private Pair<PotentialMove, Double> calculate(PotentialMove m, ChessColor myColor, Board board) {
         Board copy = board.copy();
         Move move = copy.toMove(m, true);
         copy.apply(move);
 
-        return new Pair<>(m, evaluate(copy, myColor, possibleMovesWhite, possibleMovesBlack));
+        return new Pair<>(m, evaluate(copy, myColor));
     }
 
-    private double evaluate(Board board, ChessColor myColor, List<PotentialMove> possibleMovesWhite, List<PotentialMove> possibleMovesBlack) {
-        double evaluate = boardEvaluator.evaluate(board, possibleMovesWhite, possibleMovesBlack);
+    private double evaluate(Board board, ChessColor myColor) {
+        double evaluate = boardEvaluator.evaluate(board);
         if (myColor == ChessColor.BLACK) {
             return 1-evaluate;
         }
