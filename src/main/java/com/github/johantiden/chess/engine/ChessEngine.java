@@ -15,8 +15,9 @@ public class ChessEngine {
 
     private void initNewGame() {
         this.board = Board.newBoard();
-        this.white = new Player(board, ChessColor.WHITE);
-        this.black = new Player(board, ChessColor.BLACK);
+        AI ai = new AI(new BoardEvaluator());
+        this.white = new Player(board, ChessColor.WHITE, ai);
+        this.black = new Player(board, ChessColor.BLACK, ai);
     }
 
     public ChessResult runGame() {

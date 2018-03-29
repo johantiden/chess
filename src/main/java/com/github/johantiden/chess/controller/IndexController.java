@@ -1,8 +1,10 @@
 package com.github.johantiden.chess.controller;
 
 
+import com.github.johantiden.chess.engine.AI;
 import com.github.johantiden.chess.engine.BoardEvaluator;
 import com.github.johantiden.chess.engine.ChessEngine;
+import com.github.johantiden.chess.engine.Player;
 import com.github.johantiden.chess.model.Board;
 import com.github.johantiden.chess.model.ChessColor;
 import com.github.johantiden.chess.util.Maths;
@@ -58,19 +60,18 @@ public class IndexController {
     }
 
     private void paintScoreBar(Graphics g, Board board) {
-        BoardEvaluator boardEvaluator = new BoardEvaluator(board);
+        BoardEvaluator boardEvaluator = new BoardEvaluator();
 
-        double white = boardEvaluator.evaluate(ChessColor.WHITE);
-        double black = boardEvaluator.evaluate(ChessColor.BLACK);
+        Player white = new Player(board, ChessColor.WHITE, new AI(boardEvaluator));
+        Player black = new Player(board, ChessColor.BLACK, new AI(boardEvaluator));
+        double evaluation = boardEvaluator.evaluate(board, white.getLegalMoves(), black.getLegalMoves());
 
-
-        double ratio =  white / (white+black);
 
         g.setColor(Color.WHITE);
-        g.fillRect(0, BOARD_WIDTH, Maths.floorI(BOARD_WIDTH*ratio), BAR_HEIGHT);
+        g.fillRect(0, BOARD_WIDTH, Maths.floorI(BOARD_WIDTH*evaluation), BAR_HEIGHT);
 
         g.setColor(Color.BLACK);
-        g.fillRect(Maths.ceilI(BOARD_WIDTH*ratio), BOARD_WIDTH, Maths.floorI(BOARD_WIDTH*(1-ratio)), BAR_HEIGHT);
+        g.fillRect(Maths.ceilI(BOARD_WIDTH*evaluation), BOARD_WIDTH, Maths.floorI(BOARD_WIDTH*(1-evaluation)), BAR_HEIGHT);
 
 
 
