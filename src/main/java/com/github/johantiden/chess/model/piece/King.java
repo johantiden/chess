@@ -18,11 +18,6 @@ public class King extends BasePiece {
     }
 
     @Override
-    protected boolean canCapture(PotentialMove m, Board board) {
-        return true;
-    }
-
-    @Override
     protected List<PotentialMove> getPossibleMoves(Board board) {
         List<PotentialMove> potentialMoves = new ArrayList<>();
         int range = 1;
@@ -37,7 +32,7 @@ public class King extends BasePiece {
                     int x = position.getX() + dx;
                     int y = position.getY() + dy;
                     if (isInsideBoard(x, y)) {
-                        potentialMoves.add(new PotentialMove(position, new Position(x, y)));
+                        potentialMoves.add(new PotentialMove(this, move(x, y)));
                     }
                 }
             }
@@ -45,6 +40,7 @@ public class King extends BasePiece {
 
         return potentialMoves;
     }
+
 
     @Override
     public PieceType type() {

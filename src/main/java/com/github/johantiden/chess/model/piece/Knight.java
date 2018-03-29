@@ -16,23 +16,18 @@ public class Knight extends BasePiece {
     }
 
     @Override
-    protected boolean canCapture(PotentialMove m, Board board) {
-        return true;
-    }
-
-    @Override
     protected List<PotentialMove> getPossibleMoves(Board board) {
 
         List<PotentialMove> moves = new ArrayList<>();
 
-        moves.add(new PotentialMove(position, position.plus(-1, -2)));
-        moves.add(new PotentialMove(position, position.plus(1, -2)));
-        moves.add(new PotentialMove(position, position.plus(2, -1)));
-        moves.add(new PotentialMove(position, position.plus(2, 1)));
-        moves.add(new PotentialMove(position, position.plus(1, 2)));
-        moves.add(new PotentialMove(position, position.plus(-1, 2)));
-        moves.add(new PotentialMove(position, position.plus(-2, 1)));
-        moves.add(new PotentialMove(position, position.plus(-2, -1)));
+        moves.add(new PotentialMove(this, move(position.plus(-1, -2))));
+        moves.add(new PotentialMove(this, move(position.plus(1, -2))));
+        moves.add(new PotentialMove(this, move(position.plus(2, -1))));
+        moves.add(new PotentialMove(this, move(position.plus(2, 1))));
+        moves.add(new PotentialMove(this, move(position.plus(1, 2))));
+        moves.add(new PotentialMove(this, move(position.plus(-1, 2))));
+        moves.add(new PotentialMove(this, move(position.plus(-2, 1))));
+        moves.add(new PotentialMove(this, move(position.plus(-2, -1))));
 
         return moves;
     }

@@ -27,6 +27,9 @@ public class ChessEngine {
             Player player = isWhite ? this.white : this.black;
 
             Move move = player.getMove();
+            if (move == null) {
+                break;
+            }
             board.apply(move);
 
             log.info("{} {}", player.color, move);

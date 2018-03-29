@@ -31,29 +31,18 @@ public class Board {
     }
 
     public static Board newBoard() {
-        return newSimpleBoard();
+        return newRealBoard();
     }
 
-    private static Board newSimpleBoard() {
+    private static Board newTestBoard() {
         Map<Position, Piece> pieces = new HashMap<>();
 
-        add(pieces, new Rook(pos(0, 0), WHITE));
-        add(pieces, new Rook(pos(7, 0), WHITE));
-        add(pieces, new Rook(pos(0, 7), BLACK));
-        add(pieces, new Rook(pos(7, 7), BLACK));
-
-        add(pieces, new Knight(pos(1, 0), WHITE));
-        add(pieces, new Knight(pos(6, 0), WHITE));
-        add(pieces, new Knight(pos(1, 7), BLACK));
-        add(pieces, new Knight(pos(6, 7), BLACK));
-
-        add(pieces, new Bishop(pos(2, 0), WHITE));
-        add(pieces, new Bishop(pos(5, 0), WHITE));
-        add(pieces, new Bishop(pos(2, 7), BLACK));
-        add(pieces, new Bishop(pos(5, 7), BLACK));
-
-        add(pieces, new Queen(pos(3, 0), WHITE));
-        add(pieces, new Queen(pos(3, 7), BLACK));
+        for (int i = 0; i < 8; i++) {
+            add(pieces, new Pawn(pos(i, 1), WHITE));
+        }
+        for (int i = 0; i < 8; i++) {
+            add(pieces, new Pawn(pos(i, 6), BLACK));
+        }
 
         add(pieces, new King(pos(4, 0), WHITE));
         add(pieces, new King(pos(4, 7), BLACK));
@@ -115,8 +104,8 @@ public class Board {
     }
 
     public Move toMove(PotentialMove potentialMove, boolean careAboutCheck) {
-        Piece piece = getPiece(potentialMove.from);
-        Optional<Piece> capture = findPiece(potentialMove.to);
+        Piece piece = potentialMove.from;
+        Optional<Piece> capture = findPiece(potentialMove.to.getPosition());
 
         return new Move(piece, potentialMove.to, this, capture, careAboutCheck);
     }
@@ -124,9 +113,8 @@ public class Board {
     public void apply(Move move) {
         move.getCapture().ifPresent(this::remove);
 
-        remove(move.getPiece());
-        Piece pieceCopy = move.getPiece().move(move.getTo());
-        add(pieceCopy);
+        remove(move.getFrom());
+        add(move.getTo());
         history.add(move);
     }
 
@@ -212,5 +200,9 @@ public class Board {
         }
 
         return sb.toString();
+    }
+
+    public List<Move> getHistory() {
+        return history;
     }
 }

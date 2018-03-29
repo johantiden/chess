@@ -10,16 +10,10 @@ import com.github.johantiden.chess.model.Position;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.johantiden.chess.model.Position.isInsideBoard;
 
 public class Rook extends BasePiece implements Piece {
     public Rook(Position position, ChessColor chessColor) {
         super(position, chessColor);
-    }
-
-    @Override
-    protected boolean canCapture(PotentialMove m, Board board) {
-        return true;
     }
 
     @Override
@@ -32,29 +26,11 @@ public class Rook extends BasePiece implements Piece {
         List<PotentialMove> potentialMoves = new ArrayList<>();
         int range = 8;
 
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX() + i, position.getY())) {
-                break;
-            }
-        }
-
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX() - i, position.getY())) {
-                break;
-            }
-        }
-
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX(), position.getY() + i)) {
-                break;
-            }
-        }
-
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX(), position.getY() - i)) {
-                break;
-            }
-        }
+        walk(board, potentialMoves, position.getX(), position.getY(), 1, 0, range, true);
+        walk(board, potentialMoves, position.getX(), position.getY(), 0, 1, range, true);
+        walk(board, potentialMoves, position.getX(), position.getY(), -1, 0, range, true);
+        walk(board, potentialMoves, position.getX(), position.getY(), 0, -1, range, true);
+        walk(board, potentialMoves, position.getX(), position.getY(), 0, -1, range, true);
 
         return potentialMoves;
     }

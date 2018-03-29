@@ -36,19 +36,15 @@ public abstract class BasePiece implements Piece {
     }
 
     private boolean isMovePossible(PotentialMove m, Board board, boolean beingChecked, boolean careAboutCheck) {
-        Piece piece = board.getPiece(m.from);
-        Optional<Piece> targetPiece = board.findPiece(m.to);
+        Piece piece = board.getPiece(m.from.getPosition());
+        Optional<Piece> targetPiece = board.findPiece(m.to.getPosition());
 
-        if (!board.isInside(m.to)) {
+        if (!board.isInside(m.to.getPosition())) {
             return false;
         }
 
         if (targetPiece.isPresent()) {
             if (targetPiece.get().getColor() == piece.getColor()) {
-                return false;
-            }
-
-            if (!canCapture(m, board)) {
                 return false;
             }
         }
@@ -73,8 +69,6 @@ public abstract class BasePiece implements Piece {
         return copy.isBeingChecked(color);
     }
 
-    protected abstract boolean canCapture(PotentialMove m, Board board);
-
     protected abstract List<PotentialMove> getPossibleMoves(Board board);
 
     @Override
@@ -87,18 +81,38 @@ public abstract class BasePiece implements Piece {
         return color+ " " + type() + " at " + position.asChessNotation();
     }
 
-    protected boolean walk(Board board, List<PotentialMove> potentialMoves, int x, int y) {
+    protected void walk(Board board, List<PotentialMove> potentialMoves, int x, int y, int dx, int dy, int maxRange, boolean canCaptureByWalking) {
+        for (int i = 1; i <= maxRange; i++) {
+            if (!tryWalk(board, potentialMoves, x + i*dx, y + i*dy, canCaptureByWalking)) {
+                break;
+            }
+        }
+    }
+
+    private boolean tryWalk(Board board, List<PotentialMove> potentialMoves, int x, int y, boolean canCaptureByWalking) {
         if (!isInsideBoard(x, y)) {
             return false;
         }
-
         Position to = new Position(x, y);
-        potentialMoves.add(new PotentialMove(position, to));
-
-        if (board.findPiece(to).isPresent()) {
+        Optional<Piece> targetPiece = board.findPiece(to);
+        if (canCaptureByWalking || !targetPiece.isPresent()) {
+            potentialMoves.add(new PotentialMove(this, move(to)));
+        }
+        if (targetPiece.isPresent()) {
             return false;
         }
 
         return true;
     }
+
+    @Override
+    public Piece move(int x, int y) {
+        return move(new Position(x, y));
+    }
+
+    @Override
+    public int getX() {return getPosition().getX();}
+    @Override
+    public int getY() {return getPosition().getY();}
+
 }

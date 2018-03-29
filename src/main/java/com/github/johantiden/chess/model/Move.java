@@ -3,14 +3,14 @@ package com.github.johantiden.chess.model;
 import java.util.Optional;
 
 public class Move {
-    private final Piece piece;
-    private final Position to;
+    private final Piece from;
+    private final Piece to;
 
     private final Optional<Piece> capture;
 
-    public Move(Piece piece, Position to, Board board, Optional<Piece> capture, boolean careAboutCheck) {
+    public Move(Piece from, Piece to, Board board, Optional<Piece> capture, boolean careAboutCheck) {
 
-        this.piece = piece;
+        this.from = from;
         this.to = to;
         this.capture = capture;
         verify(board, careAboutCheck);
@@ -19,13 +19,13 @@ public class Move {
 
     private void verify(Board board, boolean careAboutCheck) {
 
-        if (piece.getPosition().equals(to)) {
-            throw new RuntimeException("Can't move piece to the same location!");
+        if (from.getPosition().equals(to)) {
+            throw new RuntimeException("Can't move from to the same location!");
         }
 
         if (capture.isPresent()) {
             Piece target = capture.get();
-            if (target.getColor() == this.piece.getColor()) {
+            if (target.getColor() == this.from.getColor()) {
                 throw new RuntimeException("Can't capture your own pieces!");
             }
 
@@ -38,7 +38,7 @@ public class Move {
             Board copy = board.copy();
             copy.apply(this);
 
-            boolean beingChecked = copy.isBeingChecked(piece.getColor());
+            boolean beingChecked = copy.isBeingChecked(from.getColor());
             if (beingChecked) {
                 throw new RuntimeException("Can't put yourself in check!");
             }
@@ -46,11 +46,11 @@ public class Move {
 
     }
 
-    public Piece getPiece() {
-        return piece;
+    public Piece getFrom() {
+        return from;
     }
 
-    public Position getTo() {
+    public Piece getTo() {
         return to;
     }
 
@@ -64,10 +64,10 @@ public class Move {
     }
 
     private String getAlgebraicNotation() {
-        return piece.type().algebraicName() +
-            piece.getPosition().asChessNotation() +
+        return from.type().algebraicName() +
+            from.getPosition().asChessNotation() +
             (capture.isPresent() ? "x" : "-") +
             (capture.map(p -> p.type().algebraicName()).orElse("")) +
-            to.asChessNotation();
+            to.getPosition().asChessNotation();
     }
 }

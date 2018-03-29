@@ -16,35 +16,14 @@ public class Bishop extends BasePiece {
     }
 
     @Override
-    protected boolean canCapture(PotentialMove m, Board board) {
-        return true;
-    }
-
-    @Override
     protected List<PotentialMove> getPossibleMoves(Board board) {
         List<PotentialMove> potentialMoves = new ArrayList<>();
         int range = 8;
 
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX() + i, position.getY() + i)) {
-                break;
-            }
-        }
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX() - i, position.getY() + i)) {
-                break;
-            }
-        }
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX() - i, position.getY() - i)) {
-                break;
-            }
-        }
-        for (int i = 1; i < range; i++) {
-            if (!walk(board, potentialMoves, position.getX() + i, position.getY() - i)) {
-                break;
-            }
-        }
+        walk(board, potentialMoves, position.getX(), position.getY(), 1, 1, range, true);
+        walk(board, potentialMoves, position.getX(), position.getY(), -1, 1, range, true);
+        walk(board, potentialMoves, position.getX(), position.getY(), -1, -1, range, true);
+        walk(board, potentialMoves, position.getX(), position.getY(), 1, -1, range, true);
 
         return potentialMoves;
 
