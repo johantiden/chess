@@ -68,7 +68,11 @@ public class ChessEngine {
         Player player = isWhite ? this.white : this.black;
 
         Move move = player.getMove();
-        return move == null;
+        boolean cantMove = move == null;
+
+
+        boolean onlyKings = board.countPieces() == 2;
+        return cantMove || onlyKings;
     }
 
     public Board getBoard() {

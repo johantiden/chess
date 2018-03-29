@@ -207,4 +207,8 @@ public class Board {
     public List<Move> getHistory() {
         return history;
     }
+
+    public int countPieces() {
+        return pieces.size();
+    }
 }
